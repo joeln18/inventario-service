@@ -25,8 +25,7 @@ export class PostgresRecetaRepository implements RecetaRepository {
     `;
 
     const result = await this.pool.query(query);
-    return [];
-    // return result.rows.map(row => new Receta(row.id, row.nombre));
+    return result.rows.map(row => new Receta(row.id, row.nombre, []));
   }
   async obtenerPorId(id: number): Promise<Receta | null> {
     const query = `
@@ -39,8 +38,7 @@ export class PostgresRecetaRepository implements RecetaRepository {
     if (result.rows.length === 0) return null;
 
     const row = result.rows[0];
-    return null;
-    // return new Receta(row.id, row.nombre);
+    return new Receta(row.id, row.nombre, []);
   }
   async guardar(receta: Receta): Promise<void> {
     const query = `

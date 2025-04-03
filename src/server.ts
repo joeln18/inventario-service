@@ -18,6 +18,7 @@ import { ActualizarInventarioPorPedido } from "./application/ActualizarInventari
 
 // Controllers
 import { IngredienteController } from "./infraestructure/IngredienteController";
+import { InventarioController } from "./infraestructure/InventarioController";
 
 
 const app = express();
@@ -35,17 +36,20 @@ const servicioActualizarInventario = new ServicioActualizacionInventario(recetaR
 // Use Cases
 const obtenerIngredientes = new ObtenerIngredientes(ingredienteRepo);
 const crearIngrediente = new CrearIngrediente(ingredienteRepo);
-// const crearReceta = new CrearReceta(recetaRepo);
-// const validarDisponibilidadPedido = new ValidarDisponibilidadPedido(servicioValidacionDisponibilidad);
+const validarDisponibilidadPedido = new ValidarDisponibilidadPedido(servicioValidacionDisponibilidad);
 // const actualizarInventarioPorPedido = new ActualizarInventarioPorPedido(servicioActualizarInventario);
+// const crearReceta = new CrearReceta(recetaRepo);
 
 // Controllers
 const ingredienteController = new IngredienteController(obtenerIngredientes, crearIngrediente);
+const inventarioController = new InventarioController(validarDisponibilidadPedido);
 
 
 // Routes
 app.get("/ingredientes", (req, res) => ingredienteController.obtenerTodos(req, res));
 app.post("/ingredientes", (req, res) => ingredienteController.crear(req, res));
+app.post("/inventario/validar", (req, res) => inventarioController.validarDisponibilidad(req, res));
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
