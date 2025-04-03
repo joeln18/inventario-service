@@ -34,52 +34,18 @@ const servicioActualizarInventario = new ServicioActualizacionInventario(recetaR
 
 // Use Cases
 const obtenerIngredientes = new ObtenerIngredientes(ingredienteRepo);
-const crearReceta = new CrearReceta(recetaRepo);
 const crearIngrediente = new CrearIngrediente(ingredienteRepo);
-const validarDisponibilidadPedido = new ValidarDisponibilidadPedido(servicioValidacionDisponibilidad);
-const actualizarInventarioPorPedido = new ActualizarInventarioPorPedido(servicioActualizarInventario);
+// const crearReceta = new CrearReceta(recetaRepo);
+// const validarDisponibilidadPedido = new ValidarDisponibilidadPedido(servicioValidacionDisponibilidad);
+// const actualizarInventarioPorPedido = new ActualizarInventarioPorPedido(servicioActualizarInventario);
 
 // Controllers
-const ingredienteController = new IngredienteController(obtenerIngredientes);
+const ingredienteController = new IngredienteController(obtenerIngredientes, crearIngrediente);
+
 
 // Routes
 app.get("/ingredientes", (req, res) => ingredienteController.obtenerTodos(req, res));
-app.post("/recetas", async (req, res) => {
-  try {
-    const { nombre, ingredientes } = req.body;
-    const receta = await crearReceta.ejecutar(nombre, ingredientes);
-    res.status(201).json(receta);
-  } catch (error) {
-    res.status(400).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
-  }
-});
-app.post("/ingredientes", async (req, res) => {
-  try {
-    const { nombre, cantidadValor, unidadMedidaId, unidadMedidaNombre } = req.body;
-    const ingrediente = await crearIngrediente.ejecutar(nombre, cantidadValor, unidadMedidaId, unidadMedidaNombre);
-    res.status(201).json(ingrediente);
-  } catch (error) {
-    res.status(400).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
-  }
-});
-app.post("/validar-disponibilidad", async (req, res) => {
-  try {
-    const { idReceta } = req.body;
-    const disponibilidad = await validarDisponibilidadPedido.ejecutar(idReceta);
-    res.status(200).json({ disponibilidad });
-  } catch (error) {
-    res.status(400).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
-  }
-});
-app.post("/actualizar-inventario", async (req, res) => {
-  try {
-    const { idReceta } = req.body;
-    await actualizarInventarioPorPedido.ejecutar(idReceta);
-    res.status(200).json({ message: "Inventario actualizado correctamente." });
-  } catch (error) {
-    res.status(400).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
-  }
-});
+app.post("/ingredientes", (req, res) => ingredienteController.crear(req, res));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
