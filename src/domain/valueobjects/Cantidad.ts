@@ -1,5 +1,6 @@
 export class Cantidad {
   private readonly valor: number;
+  static UnidadMedida: any;
 
   constructor(valor: number) {
     if (valor < 0) {
