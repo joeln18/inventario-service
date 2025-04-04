@@ -1,21 +1,15 @@
-import express from "express";
-import cors from "cors";
-import { PostgresIngredienteRepository } from "./infraestructure/PostgresIngredienteRepository";
-import { ObtenerIngredientes } from "./application/ObtenerIngrediente";
-import { IngredienteController } from "./infraestructure/IngredienteController";
-
+import express from 'express';
+import router from './infraestructure/routes/inventoryRoutes';
+import Database from './infraestructure/database/Database';
 
 const app = express();
 app.use(express.json());
-app.use(cors());
 
-const ingredienteRepo = new PostgresIngredienteRepository();
-const obtenerIngredientes = new ObtenerIngredientes(ingredienteRepo);
-const ingredienteController = new IngredienteController(obtenerIngredientes);
-
-app.get("/ingredientes", (req, res) => ingredienteController.obtenerTodos(req, res));
+app.use('/api', router);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Microservicio de Inventario corriendo en http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
+
+Database.testConnection();

@@ -47,6 +47,8 @@ Crea un archivo `.env` en la raíz del proyecto con la siguiente configuración:
 Ejecuta el siguiente script SQL en PostgreSQL para crear las tablas necesarias:
 
 ```sql
+ CREATE DATABASE restaurante OWNER mi_usuario;
+ \c restaurante;
  CREATE TABLE IF NOT EXISTS unidad_medida (
      id SERIAL PRIMARY KEY,
      nombre VARCHAR(50) UNIQUE NOT NULL
@@ -55,7 +57,7 @@ Ejecuta el siguiente script SQL en PostgreSQL para crear las tablas necesarias:
  CREATE TABLE IF NOT EXISTS ingrediente (
      id SERIAL PRIMARY KEY,
      nombre VARCHAR(100) UNIQUE NOT NULL,
-     cantidad DECIMAL(10,2) NOT NULL,
+     cantidad INT NOT NULL,
      unidad_medida_id INT NOT NULL,
      FOREIGN KEY (unidad_medida_id) REFERENCES unidad_medida(id)
  );
@@ -69,12 +71,42 @@ Ejecuta el siguiente script SQL en PostgreSQL para crear las tablas necesarias:
      id SERIAL PRIMARY KEY,
      receta_id INT NOT NULL,
      ingrediente_id INT NOT NULL,
-     cantidad DECIMAL(10,2) NOT NULL,
+     cantidad INT NOT NULL,
      unidad_medida_id INT NOT NULL,
      FOREIGN KEY (receta_id) REFERENCES receta(id),
      FOREIGN KEY (ingrediente_id) REFERENCES ingrediente(id),
      FOREIGN KEY (unidad_medida_id) REFERENCES unidad_medida(id)
  );
+```
+
+Ejecuta el siguiente script SQL en PostgreSQL para llenar con data dummy la base de datos:
+
+```sql
+-- Insertar unidades de medida
+INSERT INTO unidad_medida (nombre) VALUES
+    ('Gramos'),
+    ('Litros'),
+    ('Unidades');
+
+-- Insertar ingredientes
+INSERT INTO ingrediente (nombre, cantidad, unidad_medida_id) VALUES
+    ('Harina', 500, 1),  -- 500 gramos de harina
+    ('Leche', 1, 2),     -- 1 litro de leche
+    ('Huevo', 3, 3);     -- 3 unidades de huevo
+
+-- Insertar recetas
+INSERT INTO receta (nombre) VALUES
+    ('Panqueques'),
+    ('Bizcocho');
+
+-- Insertar ingredientes en recetas
+INSERT INTO ingrediente_receta (receta_id, ingrediente_id, cantidad, unidad_medida_id) VALUES
+    (1, 1, 250, 1), -- 250g de harina para Panqueques
+    (1, 2, 0.5, 2), -- 0.5 litros de leche para Panqueques
+    (1, 3, 2, 3),   -- 2 huevos para Panqueques
+    (2, 1, 300, 1), -- 300g de harina para Bizcocho
+    (2, 2, 0.3, 2), -- 0.3 litros de leche para Bizcocho
+    (2, 3, 3, 3);   -- 3 huevos para Bizcocho
 ```
 
 ### 5️⃣ Ejecutar el Proyecto

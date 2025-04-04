@@ -1,8 +1,8 @@
-export class Ingrediente {
+export class Ingredient {
     constructor(
       public id: number,
       public nombre: string,
       public cantidad: number,
-      public unidadMedida: string
+      public unidad_medida_id: string
     ) {}
 }
