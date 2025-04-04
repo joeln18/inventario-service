@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { setupSwagger } from "./swagger"; 
 
 // Repositories
 import { PostgresIngredienteRepository } from "./infraestructure/PostgresIngredienteRepository";
@@ -24,6 +25,7 @@ import { InventarioController } from "./infraestructure/InventarioController";
 const app = express();
 app.use(express.json());
 app.use(cors());
+setupSwagger(app);
 
 // Repositories
 const ingredienteRepo = new PostgresIngredienteRepository();
