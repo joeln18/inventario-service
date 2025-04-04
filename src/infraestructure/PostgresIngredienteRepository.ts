@@ -52,9 +52,9 @@ export class PostgresIngredienteRepository implements IngredienteRepository {
 
     const row = result.rows[0];
     return new Ingrediente(
-      row.id_ingrediente,
-      row.nombre_ingrediente,
-      new Cantidad(row.cantidad_ingrediente),
+      row.id,
+      row.nombre,
+      new Cantidad(Number(row.cantidad)),
       new UnidadMedida(row.unidad_id, row.unidad_nombre)
     );
   }

@@ -25,6 +25,7 @@ export class ServicioValidacionDisponibilidad {
         throw new Error(`Receta con ID ${recetaId} no encontrada.`);
       }
 
+
       for (const ingrediente of receta.getIngredientes()) {
         const disponible = await this.verificarDisponibilidadIngrediente(
           ingrediente.idIngrediente,
