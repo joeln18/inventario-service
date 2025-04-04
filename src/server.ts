@@ -37,18 +37,19 @@ const servicioActualizarInventario = new ServicioActualizacionInventario(recetaR
 const obtenerIngredientes = new ObtenerIngredientes(ingredienteRepo);
 const crearIngrediente = new CrearIngrediente(ingredienteRepo);
 const validarDisponibilidadPedido = new ValidarDisponibilidadPedido(servicioValidacionDisponibilidad);
-// const actualizarInventarioPorPedido = new ActualizarInventarioPorPedido(servicioActualizarInventario);
+const actualizarInventarioPorPedido = new ActualizarInventarioPorPedido(servicioActualizarInventario);
 // const crearReceta = new CrearReceta(recetaRepo);
 
 // Controllers
 const ingredienteController = new IngredienteController(obtenerIngredientes, crearIngrediente);
-const inventarioController = new InventarioController(validarDisponibilidadPedido);
+const inventarioController = new InventarioController(validarDisponibilidadPedido, actualizarInventarioPorPedido);
 
 
 // Routes
 app.get("/ingredientes", (req, res) => ingredienteController.obtenerTodos(req, res));
 app.post("/ingredientes", (req, res) => ingredienteController.crear(req, res));
 app.post("/inventario/validar", (req, res) => inventarioController.validarDisponibilidad(req, res));
+app.post("/inventario/actualizar", (req, res) => inventarioController.actualizarInventario(req, res));
 
 
 const PORT = process.env.PORT || 3000;
