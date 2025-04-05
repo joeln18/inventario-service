@@ -3,6 +3,7 @@ import router from './infraestructure/routes/inventoryRoutes';
 import Database from './infraestructure/database/Database';
 
 const app = express();
+app.disable("x-powered-by");
 app.use(express.json());
 
 app.use('/api', router);

@@ -35,7 +35,9 @@ describe('dbValidator', () => {
         const reqMock: any = {};
         const test = validateFields(reqMock, resMock, jest.fn());
         expect(test).toBeUndefined();
-    } catch (error) {}
+    } catch (error) {
+      console.log('error test ', error);
+    }
   });
 
   it('validateFields', () => {
@@ -48,6 +50,8 @@ describe('dbValidator', () => {
         const resMock : any = {status: jest.fn()};                             
         const test = validateFields(fieldsMock, resMock, jest.fn());
         expect(test).toBeUndefined();
-    } catch (error) {}
+    } catch (error) {
+      console.log('error validateFields ', error);
+    }
   });
 });
