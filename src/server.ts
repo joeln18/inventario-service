@@ -13,3 +13,5 @@ app.listen(PORT, () => {
 });
 
 Database.testConnection();
+
+export { app as server };
