@@ -4,13 +4,11 @@ import Ingredient from "../database/models/IngredientModel";
 class IngredientRepository {
     async getAll(): Promise<Ingredient[]> {
         const ingredients = await Ingredient.findAll();
-        console.log(' ingredients ', ingredients.map(ingredient => ingredient.dataValues));
         return ingredients;
     }
 
     async getById(id: number) {
         const ingredient = await Ingredient.findByPk(id);
-        console.log(' ingredient ', ingredient?.dataValues);
         return ingredient;
     }
 
