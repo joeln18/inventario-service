@@ -1,3 +1,4 @@
+import { InventoryDTO } from "../../application/dtos/InventoryDTO";
 import InventoryRepository from "../../infraestructure/repositories/InventoryRepository";
 import { IInventory } from "../interfaces/IInventory";
 
@@ -8,15 +9,18 @@ class InventoryService implements IInventory {
     }
 
     async updateInventory(id: number) {
-        return await InventoryRepository.updateInventoryForRecipe(id);
+        await InventoryRepository.updateInventoryForRecipe(id);
+        return InventoryDTO.createSuccess('Inventory updated successfully');
     }
 
     async reduceInventory(id: number, quantity: number) {
-        return await InventoryRepository.reduceInventory(id, quantity);
+        await InventoryRepository.reduceInventory(id, quantity);
+            return InventoryDTO.createSuccess('Inventory reduced successfully');
     }
 
     async increaseInventory(id: number, quantity: number) {
-        return await InventoryRepository.increaseInventory(id, quantity);
+        await InventoryRepository.increaseInventory(id, quantity);
+        return InventoryDTO.createSuccess('Inventory increased successfully');
     }
 }
 

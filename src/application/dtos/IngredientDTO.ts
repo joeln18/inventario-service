@@ -13,7 +13,7 @@ export class IngredientDTO {
         this.measureUnit = unidad_medida_id;
     }
 
-    static fromModel(model: Ingredient): IngredientDTO {
+    static fromModel(model: any): IngredientDTO {
         return new IngredientDTO(
             model.id,
             model.nombre,

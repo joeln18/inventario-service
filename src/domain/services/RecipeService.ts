@@ -1,22 +1,27 @@
+import { RecipeDTO } from "../../application/dtos/RecipeDTO";
 import RecipeRepository from "../../infraestructure/repositories/RecipeRepository";
 import { IRecipe } from "../interfaces/IRecipe";
 
 
 class RecipeService implements IRecipe {
     async getAllRecipes() {
-        return await RecipeRepository.getAll();
+        const recipes = await RecipeRepository.getAll();
+        return RecipeDTO.fromModelArray(recipes);
     }
 
     async getRecipeById(id: number) {
-        return await RecipeRepository.getById(id);
+        const recipe = await RecipeRepository.getById(id);
+        return recipe ? RecipeDTO.fromModel(recipe) : null;
     }
 
     async createRecipe(data: any) {
-        return await RecipeRepository.create(data);
+        const recipe = await RecipeRepository.create(data);
+        return RecipeDTO.fromModel(recipe);
     }
 
     async updateRecipe(id: number, data: any) {
-        return await RecipeRepository.update(id, data);
+        const recipe = await RecipeRepository.update(id, data);
+        return recipe ? RecipeDTO.fromModel(recipe) : null;
     }
 
     async deleteRecipe(id: number) {
