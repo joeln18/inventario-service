@@ -6,14 +6,17 @@ paths:
         - Recipes
       operationId: getAllRecipes
       responses:
-        '200':
+        "200":
           description: A list of recipes
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Recipe'
+                  $ref: "#/components/schemas/RecipeOutput"
+        "500":
+          description: Internal server error
+
     post:
       summary: Create a new recipe
       tags:
@@ -24,10 +27,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Recipe'
+              $ref: "#/components/schemas/RecipeInput"
       responses:
-        '201':
+        "201":
           description: Recipe created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecipeOutput"
+        "400":
+          description: Invalid input
+        "500":
+          description: Internal server error
+
   /recipes/{id}:
     get:
       summary: Get a recipe by ID
@@ -40,16 +52,19 @@ paths:
           required: true
           description: The ID of the recipe to retrieve
           schema:
-            type: string
+            type: integer
       responses:
-        '200':
+        "200":
           description: Recipe details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Recipe'
-        '404':
+                $ref: "#/components/schemas/RecipeOutput"
+        "404":
           description: Recipe not found
+        "500":
+          description: Internal server error
+
     put:
       summary: Update a recipe by ID
       tags:
@@ -61,18 +76,27 @@ paths:
           required: true
           description: The ID of the recipe to update
           schema:
-            type: string
+            type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Recipe'
+              $ref: "#/components/schemas/RecipeInput"
       responses:
-        '200':
+        "200":
           description: Recipe updated successfully
-        '404':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecipeOutput"
+        "400":
+          description: Invalid input
+        "404":
           description: Recipe not found
+        "500":
+          description: Internal server error
+
     delete:
       summary: Delete a recipe by ID
       tags:
@@ -84,32 +108,38 @@ paths:
           required: true
           description: The ID of the recipe to delete
           schema:
-            type: string
+            type: integer
       responses:
-        '204':
+        "200":
           description: Recipe deleted successfully
-        '404':
+        "404":
           description: Recipe not found
+        "500":
+          description: Internal server error
+
 components:
   schemas:
-    Recipe:
+    RecipeInput:
       type: object
       properties:
-        id:
-          type: string
-          description: Unique identifier for the recipe
         name:
           type: string
-          description: Name of the recipe
         ingredients:
           type: array
           items:
             type: string
-          description: List of ingredients
         instructions:
           type: string
-          description: Cooking instructions
       required:
         - name
         - ingredients
         - instructions
+
+    RecipeOutput:
+      allOf:
+        - $ref: "#/components/schemas/RecipeInput"
+        - type: object
+          properties:
+            id:
+              type: integer
+              description: Unique identifier for the recipe

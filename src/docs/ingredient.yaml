@@ -13,6 +13,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/IngredientOutput'
+        '500':
+          description: Internal server error
 
     post:
       summary: Create a new ingredient
@@ -31,6 +33,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IngredientOutput'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
 
   /ingredients/{id}:
     get:
@@ -53,6 +60,8 @@ paths:
                 $ref: '#/components/schemas/IngredientOutput'
         '404':
           description: Not found
+        '500':
+          description: Internal server error
 
     put:
       summary: Update ingredient by ID
@@ -65,12 +74,6 @@ paths:
           schema:
             type: integer
           description: ID of the ingredient to update
-        - in: body
-          name: cantidad
-          required: true
-          schema:
-            type: number
-          description: Quantity must be a numeric value
       requestBody:
         required: true
         content:
@@ -84,6 +87,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IngredientOutput'
+        '400':
+          description: Invalid input
+        '404':
+          description: Ingredient not found
+        '500':
+          description: Internal server error
 
     delete:
       summary: Delete ingredient by ID
@@ -98,7 +107,12 @@ paths:
           description: ID of the ingredient to delete
       responses:
         '200':
-          description: Deleted
+          description: Ingredient deleted successfully
+        '404':
+          description: Ingredient not found
+        '500':
+          description: Internal server error
+
 
 components:
   schemas:
@@ -109,9 +123,12 @@ components:
           type: string
         quantity:
           type: number
+        measureUnit:
+          type: string
       required:
         - name
         - quantity
+        - measureUnit
 
     IngredientOutput:
       type: object
@@ -122,7 +139,11 @@ components:
           type: string
         quantity:
           type: number
+        measureUnit:
+          type: string
       required:
         - id
         - name
         - quantity
+        - measureUnit
+

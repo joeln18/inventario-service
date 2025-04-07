@@ -1,146 +1,142 @@
-/inventory/check:
-  post:
-    tags:
-      - Inventory
-    summary: Check inventory availability
-    description: Verify if the requested inventory items are available in stock.
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              items:
+paths:
+  /inventory:
+    get:
+      summary: Get all inventory items
+      tags:
+        - Inventory
+      operationId: getAllInventory
+      responses:
+        '200':
+          description: A list of inventory items
+          content:
+            application/json:
+              schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      description: Unique identifier for the inventory item.
-                    quantity:
-                      type: integer
-                      description: Quantity to check availability for.
-                required:
-                  - id
-                  - quantity
-    responses:
-      '200':
-        description: Availability status of the requested inventory items.
+                  $ref: '#/components/schemas/InventoryOutput'
+        '500':
+          description: Internal server error
+
+    post:
+      summary: Create a new inventory item
+      tags:
+        - Inventory
+      operationId: createInventory
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                available:
-                  type: boolean
-                  description: Indicates if all requested items are available.
-                unavailableItems:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        description: Unique identifier for the unavailable item.
-                      quantity:
-                        type: integer
-                        description: Quantity requested but unavailable.
-      '400':
-        description: Invalid request payload.
+              $ref: '#/components/schemas/InventoryInput'
+      responses:
+        '201':
+          description: Inventory item created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryOutput'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
 
-/inventory/order:
-  post:
-    tags:
-      - Inventory
-    summary: Update inventory after order
-    description: Deduct the quantities of items from the inventory after an order is placed.
-    requestBody:
-      required: true
-      content:
-        application/json:
+  /inventory/{id}:
+    get:
+      summary: Get an inventory item by ID
+      tags:
+        - Inventory
+      operationId: getInventoryById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the inventory item to retrieve
           schema:
-            type: object
-            properties:
-              items:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      description: Unique identifier for the inventory item.
-                    quantity:
-                      type: integer
-                      description: Quantity to deduct from inventory.
-                required:
-                  - id
-                  - quantity
-    responses:
-      '200':
-        description: Inventory updated successfully.
-      '400':
-        description: Invalid request payload.
-      '404':
-        description: One or more inventory items not found.
+            type: integer
+      responses:
+        '200':
+          description: Inventory item details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryOutput'
+        '404':
+          description: Inventory item not found
+        '500':
+          description: Internal server error
 
-/inventory/reduce:
-  post:
-    tags:
-      - Inventory
-    summary: Reduce inventory quantity
-    description: Reduce the quantity of a specific inventory item.
-    requestBody:
-      required: true
-      content:
-        application/json:
+    put:
+      summary: Update an inventory item by ID
+      tags:
+        - Inventory
+      operationId: updateInventoryById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the inventory item to update
           schema:
-            type: object
-            properties:
-              id:
-                type: string
-                description: Unique identifier for the inventory item.
-              quantity:
-                type: integer
-                description: Quantity to reduce from inventory.
-            required:
-              - id
-              - quantity
-    responses:
-      '200':
-        description: Inventory quantity reduced successfully.
-      '400':
-        description: Invalid request payload.
-      '404':
-        description: Inventory item not found.
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryInput'
+      responses:
+        '200':
+          description: Inventory item updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryOutput'
+        '400':
+          description: Invalid input
+        '404':
+          description: Inventory item not found
+        '500':
+          description: Internal server error
 
-/inventory/increase:
-  post:
-    tags:
-      - Inventory
-    summary: Increase inventory quantity
-    description: Increase the quantity of a specific inventory item.
-    requestBody:
-      required: true
-      content:
-        application/json:
+    delete:
+      summary: Delete an inventory item by ID
+      tags:
+        - Inventory
+      operationId: deleteInventoryById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the inventory item to delete
           schema:
-            type: object
-            properties:
-              id:
-                type: string
-                description: Unique identifier for the inventory item.
-              quantity:
-                type: integer
-                description: Quantity to add to inventory.
-            required:
-              - id
-              - quantity
-    responses:
-      '200':
-        description: Inventory quantity increased successfully.
-      '400':
-        description: Invalid request payload.
-      '404':
-        description: Inventory item not found.
+            type: integer
+      responses:
+        '200':
+          description: Inventory item deleted successfully
+        '404':
+          description: Inventory item not found
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    InventoryInput:
+      type: object
+      properties:
+        ingredientId:
+          type: integer
+          description: ID of the associated ingredient
+        quantity:
+          type: number
+          description: Quantity available in inventory
+      required:
+        - ingredientId
+        - quantity
+
+    InventoryOutput:
+      allOf:
+        - $ref: '#/components/schemas/InventoryInput'
+        - type: object
+          properties:
+            id:
+              type: integer
+              description: Unique identifier for the inventory item

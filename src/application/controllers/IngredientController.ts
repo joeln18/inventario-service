@@ -3,28 +3,48 @@ import IngredientService from '../../domain/services/IngredientService';
 
 class IngredientController {
     async getAll(req: Request, res: Response) {
-        const ingredients = await IngredientService.getAllIngredients();
-        res.status(200).json(ingredients);
+        try {
+            const ingredients = await IngredientService.getAllIngredients();
+            res.status(200).json(ingredients);
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to fetch ingredients' });
+        }
     }
 
     async getById(req: Request, res: Response) {
-        const ingredient = await IngredientService.getIngredientById(Number(req.params.id));
-        res.json(ingredient);
+        try {
+            const ingredient = await IngredientService.getIngredientById(Number(req.params.id));
+            res.status(200).json(ingredient);
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to fetch ingredient' });
+        }
     }
 
     async create(req: Request, res: Response) {
-        const newIngredient = await IngredientService.createIngredient(req.body);
-        res.json(newIngredient);
+        try {
+            const newIngredient = await IngredientService.createIngredient(req.body);
+            res.status(201).json(newIngredient);
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to create ingredient' });
+        }
     }
 
     async update(req: Request, res: Response) {
-        const updatedIngredient = await IngredientService.updateIngredient(Number(req.params.id), req.body);
-        res.json(updatedIngredient);
+        try {
+            const updatedIngredient = await IngredientService.updateIngredient(Number(req.params.id), req.body);
+            res.status(200).json(updatedIngredient);
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to update ingredient' });
+        }
     }
 
     async delete(req: Request, res: Response) {
-        await IngredientService.deleteIngredient(Number(req.params.id));
-        res.json({ message: 'Ingredient deleted' });
+        try {
+            await IngredientService.deleteIngredient(Number(req.params.id));
+            res.status(200).json({ message: 'Ingredient deleted' });
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to delete ingredient' });
+        }
     }
 }
 

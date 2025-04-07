@@ -41,7 +41,7 @@ describe('Ingredient routes', () => {
         const res = await request(server)
             .post('/api/ingredients')
             .send({ nombre: 'Azúcar', cantidad: 10 });
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(201);
     });
     it('GET /ingredient update', async () => {
         const res = await request(server)

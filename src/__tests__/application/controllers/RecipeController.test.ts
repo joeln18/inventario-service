@@ -29,37 +29,111 @@ describe('RecipeController', () => {
         jest.clearAllMocks();
     });
     it('should get all recipes', async () => {
-        const mockRecipe = [{ id: 1, name: 'recipe1' }, { id: 2, name: 'recipe2' }];
-        (RecipeService.getAllRecipes as jest.Mock).mockResolvedValue(mockRecipe);
-        const test = RecipeController.getAll(req, res)
+        const mockRecipes = [
+            {
+                id: 1,
+                nombre: 'recipe1',
+                ingredients: [
+                    { id: 1, name: 'Flour', quantity: 2, measureUnit: 'kg' }
+                ]
+            },
+            {
+                id: 2,
+                nombre: 'recipe2',
+                ingredients: []
+            }
+        ];
+
+        (RecipeService.getAllRecipes as jest.Mock).mockResolvedValue(mockRecipes);
+
+        await RecipeController.getAll(req, res);
+
         expect(test).toBeDefined()
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith(mockRecipes);
     });
+
 
     it('should get recipe by id', async () => {
-        const mockRecipe = { id: 1, name: 'recipe1' };
+        const mockRecipe = {
+            id: 1,
+            nombre: 'recipe1',
+            ingredients: [
+                { id: 1, name: 'Sugar', quantity: 1, measureUnit: 'kg' }
+            ]
+        };
+
+        req.params.id = '1';
+
         (RecipeService.getRecipeById as jest.Mock).mockResolvedValue(mockRecipe);
-        const test = RecipeController.getById(req, res)
+
+        await RecipeController.getById(req, res);
+
         expect(test).toBeDefined()
+        expect(RecipeService.getRecipeById).toHaveBeenCalledWith(1);
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith(mockRecipe);
     });
+
 
     it('should create recipe', async () => {
-        const mockRecipe = { id: 1, name: 'recipe1' };
+        const mockRecipe = {
+            id: 1,
+            nombre: 'recipe1',
+            ingredients: [
+                { id: 1, name: 'Salt', quantity: 1, measureUnit: 'kg' }
+            ]
+        };
+
+        req.body = {
+            nombre: 'recipe1',
+            ingredients: mockRecipe.ingredients
+        };
+
         (RecipeService.createRecipe as jest.Mock).mockResolvedValue(mockRecipe);
-        const test = RecipeController.create(req, res)
+
+        await RecipeController.create(req, res);
+
         expect(test).toBeDefined()
+        expect(RecipeService.createRecipe).toHaveBeenCalledWith(req.body);
+        expect(res.status).toHaveBeenCalledWith(201);
+        expect(res.json).toHaveBeenCalledWith(mockRecipe);
     });
+
 
     it('should update recipe', async () => {
-        const mockRecipe = { id: 1, name: 'recipe1' };
+        const mockRecipe = {
+            id: 1,
+            nombre: 'updated recipe',
+            ingredients: []
+        };
+
+        req.params.id = '1';
+        req.body = {
+            nombre: 'updated recipe',
+            ingredients: []
+        };
+
         (RecipeService.updateRecipe as jest.Mock).mockResolvedValue(mockRecipe);
-        const test = RecipeController.update(req, res)
+
+        await RecipeController.update(req, res);
+
         expect(test).toBeDefined()
+        expect(RecipeService.updateRecipe).toHaveBeenCalledWith(1, req.body);
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith(mockRecipe);
     });
 
+
     it('should delete recipe', async () => {
-        const mockRecipe = { id: 1, name: 'recipe1' };
-        (RecipeService.deleteRecipe as jest.Mock).mockResolvedValue(mockRecipe);
-        const test = RecipeController.delete(req, res)
-        expect(test).toBeDefined()
+        req.params.id = '1';
+
+        (RecipeService.deleteRecipe as jest.Mock).mockResolvedValue(undefined);
+
+        await RecipeController.delete(req, res);
+
+        expect(RecipeService.deleteRecipe).toHaveBeenCalledWith(1);
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({ message: 'Recipe deleted' });
     });
 });
