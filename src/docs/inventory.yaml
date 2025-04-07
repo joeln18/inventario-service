@@ -1,142 +1,98 @@
-paths:
-  /inventory:
-    get:
-      summary: Get all inventory items
-      tags:
-        - Inventory
-      operationId: getAllInventory
-      responses:
-        '200':
-          description: A list of inventory items
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/InventoryOutput'
-        '500':
-          description: Internal server error
-
+  /inventory/order:
     post:
-      summary: Create a new inventory item
+      summary: Update inventory quantity (order)
       tags:
         - Inventory
-      operationId: createInventory
+      operationId: updateInventory
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InventoryInput'
-      responses:
-        '201':
-          description: Inventory item created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InventoryOutput'
-        '400':
-          description: Invalid input
-        '500':
-          description: Internal server error
-
-  /inventory/{id}:
-    get:
-      summary: Get an inventory item by ID
-      tags:
-        - Inventory
-      operationId: getInventoryById
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The ID of the inventory item to retrieve
-          schema:
-            type: integer
+              type: object
+              properties:
+                id_ingredient:
+                  type: integer
+                quantity:
+                  type: number
+              required:
+                - id_ingredient
+                - quantity
       responses:
         '200':
-          description: Inventory item details
+          description: Inventory updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InventoryOutput'
-        '404':
-          description: Inventory item not found
-        '500':
-          description: Internal server error
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          description: Invalid input
 
-    put:
-      summary: Update an inventory item by ID
+  /inventory/reduce:
+    post:
+      summary: Reduce inventory quantity
       tags:
         - Inventory
-      operationId: updateInventoryById
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The ID of the inventory item to update
-          schema:
-            type: integer
+      operationId: reduceInventory
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InventoryInput'
+              type: object
+              properties:
+                id_ingredient:
+                  type: integer
+                quantity:
+                  type: number
+              required:
+                - id_ingredient
+                - quantity
       responses:
         '200':
-          description: Inventory item updated successfully
+          description: Inventory reduced successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InventoryOutput'
+                type: object
+                properties:
+                  success:
+                    type: boolean
         '400':
           description: Invalid input
-        '404':
-          description: Inventory item not found
-        '500':
-          description: Internal server error
 
-    delete:
-      summary: Delete an inventory item by ID
+  /inventory/increase:
+    post:
+      summary: Increase inventory quantity
       tags:
         - Inventory
-      operationId: deleteInventoryById
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The ID of the inventory item to delete
-          schema:
-            type: integer
+      operationId: increaseInventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_ingredient:
+                  type: integer
+                quantity:
+                  type: number
+              required:
+                - id_ingredient
+                - quantity
       responses:
         '200':
-          description: Inventory item deleted successfully
-        '404':
-          description: Inventory item not found
-        '500':
-          description: Internal server error
-
-components:
-  schemas:
-    InventoryInput:
-      type: object
-      properties:
-        ingredientId:
-          type: integer
-          description: ID of the associated ingredient
-        quantity:
-          type: number
-          description: Quantity available in inventory
-      required:
-        - ingredientId
-        - quantity
-
-    InventoryOutput:
-      allOf:
-        - $ref: '#/components/schemas/InventoryInput'
-        - type: object
-          properties:
-            id:
-              type: integer
-              description: Unique identifier for the inventory item
+          description: Inventory increased successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          description: Invalid input
