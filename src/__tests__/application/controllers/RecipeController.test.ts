@@ -137,3 +137,66 @@ describe('RecipeController', () => {
         expect(res.json).toHaveBeenCalledWith({ message: 'Recipe deleted' });
     });
 });
+
+describe('RecipeController Error Handling', () => {
+    let req: any;
+    let res: any;
+
+    beforeEach(() => {
+        req = {
+            params: {},
+            body: {},
+        };
+        res = {
+            json: jest.fn(),
+            status: jest.fn().mockReturnThis(),
+        };
+        jest.clearAllMocks();
+    });
+
+    it('should return 400 on getAll error', async () => {
+        (RecipeService.getAllRecipes as jest.Mock).mockRejectedValue(new Error('Failed to fetch recipes'));
+        await RecipeController.getAll(req, res);
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'Failed to fetch recipes' });
+    });
+
+    it('should return 400 on getById error', async () => {
+        req.params.id = '1';
+        (RecipeService.getRecipeById as jest.Mock).mockRejectedValue(new Error('Failed to fetch recipe'));
+        await RecipeController.getById(req, res);
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'Failed to fetch recipe' });
+    });
+
+    it('should return 400 on create error', async () => {
+        req.body = {
+            nombre: 'recipe1',
+            ingredients: []
+        };
+        (RecipeService.createRecipe as jest.Mock).mockRejectedValue(new Error('Failed to create recipe'));
+        await RecipeController.create(req, res);
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'Failed to create recipe' });
+    });
+
+    it('should return 400 on update error', async () => {
+        req.params.id = '1';
+        req.body = {
+            nombre: 'updated recipe',
+            ingredients: []
+        };
+        (RecipeService.updateRecipe as jest.Mock).mockRejectedValue(new Error('Failed to update recipe'));
+        await RecipeController.update(req, res);
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'Failed to update recipe' });
+    });
+
+    it('should return 400 on delete error', async () => {
+        req.params.id = '1';
+        (RecipeService.deleteRecipe as jest.Mock).mockRejectedValue(new Error('Failed to delete recipe'));
+        await RecipeController.delete(req, res);
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'Failed to delete recipe' });
+    });
+});

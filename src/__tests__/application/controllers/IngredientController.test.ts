@@ -92,3 +92,67 @@ describe('IngredientController', () => {
         expect(res.status).toHaveBeenCalledWith(200);
     });
 });
+
+describe('IngredientController Error Handling', () => {
+    let req: any;
+    let res: any;
+
+    beforeEach(() => {
+        req = {
+            params: {},
+            body: {},
+        };
+        res = {
+            json: jest.fn(),
+            status: jest.fn().mockReturnThis(),
+        };
+    });
+    afterEach(() => {
+        jest.clearAllMocks();
+    }
+    );
+    it('should return 400 on getAll error', async () => {
+        (IngredientService.getAllIngredients as jest.Mock).mockRejectedValue(new Error('Failed to fetch ingredients'));
+        await IngredientController.getAll(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'Failed to fetch ingredients' });
+    });
+
+    it('should return 400 on getById error', async () => {
+        req.params.id = 1;
+        (IngredientService.getIngredientById as jest.Mock).mockRejectedValue(new Error('Failed to fetch ingredient'));
+        await IngredientController.getById(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'Failed to fetch ingredient' });
+    });
+
+    it('should return 400 on create error', async () => {
+        req.body = { name: 'Ingredient1', quantity: 10, measureUnit: 'kg' };
+        (IngredientService.createIngredient as jest.Mock).mockRejectedValue(new Error('Failed to create ingredient'));
+        await IngredientController.create(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'Failed to create ingredient' });
+    });
+
+    it('should return 400 on update error', async () => {
+        req.params.id = 1;
+        req.body = { name: 'Ingredient1', quantity: 10, measureUnit: 'kg' };
+        (IngredientService.updateIngredient as jest.Mock).mockRejectedValue(new Error('Failed to update ingredient'));
+        await IngredientController.update(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'Failed to update ingredient' });
+    });
+
+    it('should return 400 on delete error', async () => {
+        req.params.id = 1;
+        (IngredientService.deleteIngredient as jest.Mock).mockRejectedValue(new Error('Failed to delete ingredient'));
+        await IngredientController.delete(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'Failed to delete ingredient' });
+    });
+});

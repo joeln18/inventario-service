@@ -7,7 +7,7 @@ class IngredientController {
             const ingredients = await IngredientService.getAllIngredients();
             res.status(200).json(ingredients);
         } catch (error) {
-            res.status(500).json({ error: 'Failed to fetch ingredients' });
+            res.status(400).json({ error: 'Failed to fetch ingredients' });
         }
     }
 
@@ -16,7 +16,7 @@ class IngredientController {
             const ingredient = await IngredientService.getIngredientById(Number(req.params.id));
             res.status(200).json(ingredient);
         } catch (error) {
-            res.status(500).json({ error: 'Failed to fetch ingredient' });
+            res.status(400).json({ error: 'Failed to fetch ingredient' });
         }
     }
 
@@ -25,7 +25,7 @@ class IngredientController {
             const newIngredient = await IngredientService.createIngredient(req.body);
             res.status(201).json(newIngredient);
         } catch (error) {
-            res.status(500).json({ error: 'Failed to create ingredient' });
+            res.status(400).json({ error: 'Failed to create ingredient' });
         }
     }
 
@@ -34,7 +34,7 @@ class IngredientController {
             const updatedIngredient = await IngredientService.updateIngredient(Number(req.params.id), req.body);
             res.status(200).json(updatedIngredient);
         } catch (error) {
-            res.status(500).json({ error: 'Failed to update ingredient' });
+            res.status(400).json({ error: 'Failed to update ingredient' });
         }
     }
 
@@ -43,7 +43,7 @@ class IngredientController {
             await IngredientService.deleteIngredient(Number(req.params.id));
             res.status(200).json({ message: 'Ingredient deleted' });
         } catch (error) {
-            res.status(500).json({ error: 'Failed to delete ingredient' });
+            res.status(400).json({ error: 'Failed to delete ingredient' });
         }
     }
 }
