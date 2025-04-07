@@ -1,0 +1,115 @@
+paths:
+  /recipes:
+    get:
+      summary: Get all recipes
+      tags:
+        - Recipes
+      operationId: getAllRecipes
+      responses:
+        '200':
+          description: A list of recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+    post:
+      summary: Create a new recipe
+      tags:
+        - Recipes
+      operationId: createRecipe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+      responses:
+        '201':
+          description: Recipe created successfully
+  /recipes/{id}:
+    get:
+      summary: Get a recipe by ID
+      tags:
+        - Recipes
+      operationId: getRecipeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the recipe to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Recipe details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '404':
+          description: Recipe not found
+    put:
+      summary: Update a recipe by ID
+      tags:
+        - Recipes
+      operationId: updateRecipeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the recipe to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+      responses:
+        '200':
+          description: Recipe updated successfully
+        '404':
+          description: Recipe not found
+    delete:
+      summary: Delete a recipe by ID
+      tags:
+        - Recipes
+      operationId: deleteRecipeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the recipe to delete
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Recipe deleted successfully
+        '404':
+          description: Recipe not found
+components:
+  schemas:
+    Recipe:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the recipe
+        name:
+          type: string
+          description: Name of the recipe
+        ingredients:
+          type: array
+          items:
+            type: string
+          description: List of ingredients
+        instructions:
+          type: string
+          description: Cooking instructions
+      required:
+        - name
+        - ingredients
+        - instructions

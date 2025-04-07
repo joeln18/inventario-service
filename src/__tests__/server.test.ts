@@ -29,8 +29,8 @@ jest.mock('../domain/services/InventoryService.ts', () => ({
 
 describe('Ingredient routes', () => {
     it('GET /ingredients debe retornar 200', async () => {
-      const res = await request(server).get('/api/ingredients');
-      expect(res.status).toBe(200);
+        const res = await request(server).get('/api/ingredients');
+        expect(res.status).toBe(200);
     });
 
     it('GET /ingredient by id debe retornar 200', async () => {

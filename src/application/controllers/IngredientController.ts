@@ -4,7 +4,7 @@ import IngredientService from '../../domain/services/IngredientService';
 class IngredientController {
     async getAll(req: Request, res: Response) {
         const ingredients = await IngredientService.getAllIngredients();
-        res.json(ingredients);
+        res.status(200).json(ingredients);
     }
 
     async getById(req: Request, res: Response) {

@@ -1,0 +1,146 @@
+/inventory/check:
+  post:
+    tags:
+      - Inventory
+    summary: Check inventory availability
+    description: Verify if the requested inventory items are available in stock.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Unique identifier for the inventory item.
+                    quantity:
+                      type: integer
+                      description: Quantity to check availability for.
+                required:
+                  - id
+                  - quantity
+    responses:
+      '200':
+        description: Availability status of the requested inventory items.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                available:
+                  type: boolean
+                  description: Indicates if all requested items are available.
+                unavailableItems:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Unique identifier for the unavailable item.
+                      quantity:
+                        type: integer
+                        description: Quantity requested but unavailable.
+      '400':
+        description: Invalid request payload.
+
+/inventory/order:
+  post:
+    tags:
+      - Inventory
+    summary: Update inventory after order
+    description: Deduct the quantities of items from the inventory after an order is placed.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Unique identifier for the inventory item.
+                    quantity:
+                      type: integer
+                      description: Quantity to deduct from inventory.
+                required:
+                  - id
+                  - quantity
+    responses:
+      '200':
+        description: Inventory updated successfully.
+      '400':
+        description: Invalid request payload.
+      '404':
+        description: One or more inventory items not found.
+
+/inventory/reduce:
+  post:
+    tags:
+      - Inventory
+    summary: Reduce inventory quantity
+    description: Reduce the quantity of a specific inventory item.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Unique identifier for the inventory item.
+              quantity:
+                type: integer
+                description: Quantity to reduce from inventory.
+            required:
+              - id
+              - quantity
+    responses:
+      '200':
+        description: Inventory quantity reduced successfully.
+      '400':
+        description: Invalid request payload.
+      '404':
+        description: Inventory item not found.
+
+/inventory/increase:
+  post:
+    tags:
+      - Inventory
+    summary: Increase inventory quantity
+    description: Increase the quantity of a specific inventory item.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Unique identifier for the inventory item.
+              quantity:
+                type: integer
+                description: Quantity to add to inventory.
+            required:
+              - id
+              - quantity
+    responses:
+      '200':
+        description: Inventory quantity increased successfully.
+      '400':
+        description: Invalid request payload.
+      '404':
+        description: Inventory item not found.
