@@ -1,0 +1,145 @@
+paths:
+  /recipes:
+    get:
+      summary: Get all recipes
+      tags:
+        - Recipes
+      operationId: getAllRecipes
+      responses:
+        "200":
+          description: A list of recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecipeOutput"
+        "500":
+          description: Internal server error
+
+    post:
+      summary: Create a new recipe
+      tags:
+        - Recipes
+      operationId: createRecipe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipeInput"
+      responses:
+        "201":
+          description: Recipe created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecipeOutput"
+        "400":
+          description: Invalid input
+        "500":
+          description: Internal server error
+
+  /recipes/{id}:
+    get:
+      summary: Get a recipe by ID
+      tags:
+        - Recipes
+      operationId: getRecipeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the recipe to retrieve
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Recipe details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecipeOutput"
+        "404":
+          description: Recipe not found
+        "500":
+          description: Internal server error
+
+    put:
+      summary: Update a recipe by ID
+      tags:
+        - Recipes
+      operationId: updateRecipeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the recipe to update
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipeInput"
+      responses:
+        "200":
+          description: Recipe updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecipeOutput"
+        "400":
+          description: Invalid input
+        "404":
+          description: Recipe not found
+        "500":
+          description: Internal server error
+
+    delete:
+      summary: Delete a recipe by ID
+      tags:
+        - Recipes
+      operationId: deleteRecipeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the recipe to delete
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Recipe deleted successfully
+        "404":
+          description: Recipe not found
+        "500":
+          description: Internal server error
+
+components:
+  schemas:
+    RecipeInput:
+      type: object
+      properties:
+        name:
+          type: string
+        ingredients:
+          type: array
+          items:
+            type: string
+        instructions:
+          type: string
+      required:
+        - name
+        - ingredients
+        - instructions
+
+    RecipeOutput:
+      allOf:
+        - $ref: "#/components/schemas/RecipeInput"
+        - type: object
+          properties:
+            id:
+              type: integer
+              description: Unique identifier for the recipe

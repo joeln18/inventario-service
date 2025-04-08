@@ -9,15 +9,18 @@ class IngredientService implements IIngredient {
     }
 
     async getIngredientById(id: number) {
-        return await IngredientRepository.getById(id);
+        const ingredient = await IngredientRepository.getById(id);
+        return ingredient ? IngredientDTO.fromModel(ingredient) : null;
     }
 
     async createIngredient(data: any) {
-        return await IngredientRepository.create(data);
+        const ingredient = await IngredientRepository.create(data);
+        return IngredientDTO.fromModel(ingredient);
     }
 
     async updateIngredient(id: number, data: any) {
-        return await IngredientRepository.update(id, data);
+        const ingredient = await IngredientRepository.update(id, data);
+        return ingredient ? IngredientDTO.fromModel(ingredient) : null;
     }
 
     async deleteIngredient(id: number) {

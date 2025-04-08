@@ -1,0 +1,149 @@
+paths:
+  /ingredients:
+    get:
+      summary: Get all ingredients
+      tags:
+        - Ingredients
+      responses:
+        '200':
+          description: List of ingredients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IngredientOutput'
+        '500':
+          description: Internal server error
+
+    post:
+      summary: Create a new ingredient
+      tags:
+        - Ingredients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngredientInput'
+      responses:
+        '201':
+          description: Ingredient created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientOutput'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+
+  /ingredients/{id}:
+    get:
+      summary: Get ingredient by ID
+      tags:
+        - Ingredients
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID of the ingredient to retrieve
+      responses:
+        '200':
+          description: Ingredient found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientOutput'
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
+
+    put:
+      summary: Update ingredient by ID
+      tags:
+        - Ingredients
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID of the ingredient to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngredientInput'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientOutput'
+        '400':
+          description: Invalid input
+        '404':
+          description: Ingredient not found
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete ingredient by ID
+      tags:
+        - Ingredients
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID of the ingredient to delete
+      responses:
+        '200':
+          description: Ingredient deleted successfully
+        '404':
+          description: Ingredient not found
+        '500':
+          description: Internal server error
+
+
+components:
+  schemas:
+    IngredientInput:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: number
+        measureUnit:
+          type: string
+      required:
+        - name
+        - quantity
+        - measureUnit
+
+    IngredientOutput:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        quantity:
+          type: number
+        measureUnit:
+          type: string
+      required:
+        - id
+        - name
+        - quantity
+        - measureUnit
+

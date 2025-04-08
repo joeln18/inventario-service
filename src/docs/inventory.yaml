@@ -1,0 +1,98 @@
+  /inventory/order:
+    post:
+      summary: Update inventory quantity (order)
+      tags:
+        - Inventory
+      operationId: updateInventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_ingredient:
+                  type: integer
+                quantity:
+                  type: number
+              required:
+                - id_ingredient
+                - quantity
+      responses:
+        '200':
+          description: Inventory updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          description: Invalid input
+
+  /inventory/reduce:
+    post:
+      summary: Reduce inventory quantity
+      tags:
+        - Inventory
+      operationId: reduceInventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_ingredient:
+                  type: integer
+                quantity:
+                  type: number
+              required:
+                - id_ingredient
+                - quantity
+      responses:
+        '200':
+          description: Inventory reduced successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          description: Invalid input
+
+  /inventory/increase:
+    post:
+      summary: Increase inventory quantity
+      tags:
+        - Inventory
+      operationId: increaseInventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_ingredient:
+                  type: integer
+                quantity:
+                  type: number
+              required:
+                - id_ingredient
+                - quantity
+      responses:
+        '200':
+          description: Inventory increased successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          description: Invalid input

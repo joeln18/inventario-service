@@ -1,10 +1,11 @@
+import { RecipeDTO } from "../../application/dtos/RecipeDTO";
 import Recipe from "../../infraestructure/database/models/RecipeModel";
 
 
 export interface IRecipe {
-    getAllRecipes(): Promise<Recipe[]>;
-    getRecipeById(id: number): Promise<Recipe | null>;
-    createRecipe(data: Partial<Recipe>): Promise<Recipe>;
-    updateRecipe(id: number, data: Partial<Recipe>): any;
+    getAllRecipes(): Promise<RecipeDTO[]>;
+    getRecipeById(id: number): Promise<RecipeDTO | null>;
+    createRecipe(data: Partial<RecipeDTO>): Promise<RecipeDTO>;
+    updateRecipe(id: number, data: Partial<RecipeDTO>): Promise<RecipeDTO | null>;
     deleteRecipe(id: number): Promise<number>;
 }
