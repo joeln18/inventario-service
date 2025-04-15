@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest ./src/__tests__ --coverage",
-    "dev": "ts-node src/server.ts"
+    "dev": "ts-node src/server.ts",
+    "sonar": "sonar-scanner"
   },
   "keywords": [],
   "author": "",
