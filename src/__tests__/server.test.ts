@@ -3,6 +3,17 @@ import { server } from '../server';
 
 jest.mock('sequelize');
 
+jest.mock('swagger-ui-express', () => {
+    return {
+        serve: jest.fn(),
+        setup: jest.fn((swaggerSpec, _) => {
+            return (_: any, res: any) => {
+                res.send(swaggerSpec);
+            }
+        })
+    }
+});
+
 jest.mock('../domain/services/IngredientService.ts', () => ({
     getAllIngredients: jest.fn().mockResolvedValue([
         { id: 1, name: 'Harina', quantity: 100, measureUnit: 'g' }
