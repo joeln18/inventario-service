@@ -143,5 +143,5 @@ Si encuentras algún error relacionado con permisos en la base de datos, revisa 
  GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO postgres;
 ```
 
-Si necesitas ayuda, ¡abre un issue o contáctanos! 🚀
+Si necesitas ayuda, ¡Abre un issue o contáctanos! 🚀
 
