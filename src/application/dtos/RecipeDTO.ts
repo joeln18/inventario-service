@@ -1,5 +1,3 @@
-import { Recipe } from "../../domain/entities/Recipe";
-
 export class RecipeDTO {
     id: number;
     recipeName: string;

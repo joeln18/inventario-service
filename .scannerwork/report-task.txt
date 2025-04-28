@@ -2,5 +2,5 @@ projectKey=microservices-node-app-restaurant
 serverUrl=http://localhost:9000
 serverVersion=10.6.0.92116
 dashboardUrl=http://localhost:9000/dashboard?id=microservices-node-app-restaurant
-ceTaskId=e9cebd28-f25e-466f-800e-143eae3a94bf
-ceTaskUrl=http://localhost:9000/api/ce/task?id=e9cebd28-f25e-466f-800e-143eae3a94bf
+ceTaskId=a535305c-ad0d-44d8-8731-958114cf2f83
+ceTaskUrl=http://localhost:9000/api/ce/task?id=a535305c-ad0d-44d8-8731-958114cf2f83

@@ -1,5 +1,3 @@
-import { Ingredient } from "../../domain/entities/Ingredient";
-
 export class IngredientDTO {
     id: number;
     name: string;
