@@ -11,7 +11,7 @@ async function ConnectionRabbit() {
       console.log("[RabbitMQ] Conexión exitosa a", rabbitmqHost);
       return connection;
     } catch (error) {
-      console.error("[RabbitMQ] Error de conexión, reintentando en 5 segundos...", error);
+      console.error("[RabbitMQ] Error de conexión, reintentando en 5 segundos...+", error);
       await new Promise(res => setTimeout(res, 5000)); // Espera 5 segundos y reintenta
     }
   }
