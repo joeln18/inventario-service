@@ -1,7 +1,7 @@
-import PublisherPort from '../../application/ports/output/PublisherPort';
+import IPublisherPort from '../../application/ports/output/PublisherPort';
 import ConnectionRabbit from './ConnectionRabbit';
 
-class PublisherAdapter extends PublisherPort {
+class PublisherAdapter implements IPublisherPort {
     publish(queueName: string, message: {id: number; data: object}): any {
         (async () => {
             try {

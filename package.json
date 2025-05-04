@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest ./src/__tests__ --coverage",
+    "test": "jest ./src/__tests__ --coverage --forceExit",
     "dev": "ts-node src/server.ts",
     "sonar": "sonar-scanner"
   },

@@ -3,6 +3,8 @@ import { server } from '../server';
 
 jest.mock('sequelize');
 
+jest.mock('amqplib');
+
 jest.mock('swagger-ui-express', () => {
     return {
         serve: jest.fn(),

@@ -115,11 +115,28 @@ describe('InventoryRepository', () => {
         expect(result.availability).toBe(true);
     });
 
+    it('should check order availability error', async () => {
+        const order = {idPedido: 1, items:[{ idReceta: 1, cantidad: 10 }]};
+        const callback: any = undefined
+        const result = await InventoryRepository.checkOrderAvailability(order, callback);
+
+        expect(result.availability).toBeFalsy();
+    });
+
+
     it('should update inventory for order', async () => {
         const order = {idPedido: 1, items:[{ idReceta: 1, cantidad: 10 }]};
         const callback = jest.fn();
         await InventoryRepository.updateInventoryForOrder(order, callback);
 
         expect(callback).toHaveBeenCalled();
+    });
+
+    it('should update inventory for order error', async () => {
+        const order = {idPedido: 1, items:[{ idReceta: 1, cantidad: 10 }]};
+        const callback: any = undefined
+        const test = await InventoryRepository.updateInventoryForOrder(order, callback);
+
+        expect(test).toBeUndefined();
     });
 });

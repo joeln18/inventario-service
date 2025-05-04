@@ -1,8 +1,7 @@
 import {ConsumeMessage} from 'amqplib';
-import ConsumePort from '../../application/ports/input/ConsumePort';
-
 import ConnectionRabbit from './ConnectionRabbit';
-class ConsumeAdapter extends ConsumePort {
+import IConsumePort from '../../application/ports/input/ConsumePort';
+class ConsumeAdapter implements IConsumePort {
     consume(queueName: string, callback: Function): any {
         (async () => {
             try {
