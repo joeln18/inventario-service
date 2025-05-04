@@ -106,4 +106,20 @@ describe('InventoryRepository', () => {
         (Ingredient.findOne as jest.Mock).mockResolvedValue({dataValues: {cantidad: 2}, update: jest.fn()});
         expect(InventoryRepository.increaseInventory(1, 5)).toBeDefined();
     });
+
+    it('should check order availability', async () => {
+        const order = {idPedido: 1, items:[{ idReceta: 1, cantidad: 10 }]};
+        const callback = jest.fn(() => true)
+        const result = await InventoryRepository.checkOrderAvailability(order, callback);
+
+        expect(result.availability).toBe(true);
+    });
+
+    it('should update inventory for order', async () => {
+        const order = {idPedido: 1, items:[{ idReceta: 1, cantidad: 10 }]};
+        const callback = jest.fn();
+        await InventoryRepository.updateInventoryForOrder(order, callback);
+
+        expect(callback).toHaveBeenCalled();
+    });
 });

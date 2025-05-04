@@ -1,3 +1,6 @@
+import InventoryRepository from "../../infraestructure/repositories/InventoryRepository";
+import { IOrderAvailability } from "../interfaces/InventoryAvailability";
+
 class InventoryService {
   public publisherPort: any;
   public consumerPort: any;
@@ -7,14 +10,32 @@ class InventoryService {
     this.consumerPort = consumerPort;
   }
 
-  async validInventory(pedido: any) {
-    await this.publisherPort.publish('validar-inventario', pedido);
+  async publishEvent(event: string, data: object) {
+    await this.publisherPort.publish(event, data);
+  }
+
+  async validateOrder(order: IOrderAvailability) {
+    if (order.idPedido && order?.items?.length > 0){
+      const {
+        checkOrderAvailability, 
+        updateInventoryForOrder, 
+        checkRecipeAvailability,
+        updateInventoryForRecipe
+      } = InventoryRepository;
+      const responseOrderAvailability = await checkOrderAvailability(order, checkRecipeAvailability);
+      console.log('responseOrderAvailability ', JSON.stringify(responseOrderAvailability));
+      this.publishEvent('DisponibilidadValidada', responseOrderAvailability);
+      if(responseOrderAvailability.availability){
+        await updateInventoryForOrder(order, updateInventoryForRecipe);
+        this.publishEvent('InventarioActualizado', {idPedido: order.idPedido});
+      }
+    }
   }
 
   async listenValidations() {
-    await this.consumerPort.consume('respuesta-inventario', (data: any) => {
+    await this.consumerPort.consume('PedidoCreado', (data: IOrderAvailability) => {
       console.log('[Inventario] Respuesta recibida:', data);
-      // Aquí procesas el evento recibido
+      this.validateOrder(data);
     });
   }
 }
