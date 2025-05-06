@@ -1,6 +1,6 @@
 export interface IOrderAvailability {
     idPedido: number; 
-    items: Array<{ idReceta: number; cantidad: number }>
+    itemPedidos: Array<{ idReceta: number; cantidad: number }>
 };
 
 export interface IResponseOrderAvailability {

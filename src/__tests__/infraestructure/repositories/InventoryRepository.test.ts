@@ -108,7 +108,7 @@ describe('InventoryRepository', () => {
     });
 
     it('should check order availability', async () => {
-        const order = {idPedido: 1, items:[{ idReceta: 1, cantidad: 10 }]};
+        const order = {idPedido: 1, itemPedidos:[{ idReceta: 1, cantidad: 10 }]};
         const callback = jest.fn(() => true)
         const result = await InventoryRepository.checkOrderAvailability(order, callback);
 
@@ -116,7 +116,7 @@ describe('InventoryRepository', () => {
     });
 
     it('should check order availability error', async () => {
-        const order = {idPedido: 1, items:[{ idReceta: 1, cantidad: 10 }]};
+        const order = {idPedido: 1, itemPedidos:[{ idReceta: 1, cantidad: 10 }]};
         const callback: any = undefined
         const result = await InventoryRepository.checkOrderAvailability(order, callback);
 
@@ -125,7 +125,7 @@ describe('InventoryRepository', () => {
 
 
     it('should update inventory for order', async () => {
-        const order = {idPedido: 1, items:[{ idReceta: 1, cantidad: 10 }]};
+        const order = {idPedido: 1, itemPedidos:[{ idReceta: 1, cantidad: 10 }]};
         const callback = jest.fn();
         await InventoryRepository.updateInventoryForOrder(order, callback);
 
@@ -133,7 +133,7 @@ describe('InventoryRepository', () => {
     });
 
     it('should update inventory for order error', async () => {
-        const order = {idPedido: 1, items:[{ idReceta: 1, cantidad: 10 }]};
+        const order = {idPedido: 1, itemPedidos:[{ idReceta: 1, cantidad: 10 }]};
         const callback: any = undefined
         const test = await InventoryRepository.updateInventoryForOrder(order, callback);
 

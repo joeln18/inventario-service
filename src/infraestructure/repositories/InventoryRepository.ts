@@ -14,7 +14,7 @@ class InventoryRepository {
      */
     async checkOrderAvailability(order: IOrderAvailability, callback: Function): Promise<IResponseOrderAvailability> {
         let items: any = [];
-        for (const item of order.items) {
+        for (const item of order.itemPedidos) {
             try {
                 const availabilityItem = await callback(item.idReceta, item.cantidad);
                 items.push({ ...item, availability: availabilityItem });
@@ -53,7 +53,7 @@ class InventoryRepository {
      * @param callback updateInventoryForRecipe
      */
     async updateInventoryForOrder(order: IOrderAvailability, callback: Function): Promise<void>{
-        for (const recipe of order.items) {
+        for (const recipe of order.itemPedidos) {
             try {
                 await callback(recipe.idReceta, recipe.cantidad);
             } catch (error) {

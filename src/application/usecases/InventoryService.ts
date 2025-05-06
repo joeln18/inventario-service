@@ -15,7 +15,7 @@ class InventoryService {
   }
 
   async validateOrder(order: IOrderAvailability) {
-    if (order.idPedido && order?.items?.length > 0){
+    if (order.idPedido && order?.itemPedidos?.length > 0){
       const {
         checkOrderAvailability, 
         updateInventoryForOrder, 

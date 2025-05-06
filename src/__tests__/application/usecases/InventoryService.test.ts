@@ -37,7 +37,7 @@ describe('InventoryService', () => {
   it('should validate order, publish events, and update inventory when available', async () => {
     const order: IOrderAvailability = {
       idPedido: 123,
-      items: [{ idReceta: 1, cantidad: 2 }],
+      itemPedidos: [{ idReceta: 1, cantidad: 2 }],
     };
 
     const mockAvailabilityResponse = { availability: true };
@@ -63,7 +63,7 @@ describe('InventoryService', () => {
   it('should validate order and publish only DisponibilidadValidada if not available', async () => {
     const order: IOrderAvailability = {
       idPedido: 456,
-      items: [{ idReceta: 1, cantidad: 1 }],
+      itemPedidos: [{ idReceta: 1, cantidad: 1 }],
     };
 
     const mockAvailabilityResponse = { availability: false };
@@ -84,9 +84,9 @@ describe('InventoryService', () => {
 
   it('should not do anything if order is invalid (no idPedido or empty items)', async () => {
     const invalidOrders: IOrderAvailability[] | any = [
-      { idPedido: 1, items: [] },
-      { idPedido: 2, items: [] },
-      { idPedido: undefined, items: [{ idReceta: 1, cantidad: 1 }] },
+      { idPedido: 1, itemPedidos: [] },
+      { idPedido: 2, itemPedidos: [] },
+      { idPedido: undefined, itemPedidos: [{ idReceta: 1, cantidad: 1 }] },
     ];
 
     for (const order of invalidOrders) {
@@ -98,7 +98,7 @@ describe('InventoryService', () => {
   });
 
   it('should set up consumerPort to listen to PedidoCreado and trigger validateOrder', async () => {
-    const mockData: IOrderAvailability = { idPedido: 789, items: [{ idReceta: 1, cantidad: 3 }] };
+    const mockData: IOrderAvailability = { idPedido: 789, itemPedidos: [{ idReceta: 1, cantidad: 3 }] };
 
     await service.listenValidations();
 
