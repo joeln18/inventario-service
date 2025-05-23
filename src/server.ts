@@ -28,7 +28,7 @@ socketService.on('connect', () => {
 
 
 setTimeout(() => {
-  socketService.emit('mensaje', 'Hola desde el backend con TypeScript!');
+  socketService.emit('mensaje', 'Hola desde inventory-service');
 }, 2000);
 
 Database.testConnection();
