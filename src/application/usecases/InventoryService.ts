@@ -1,4 +1,5 @@
 import InventoryRepository from "../../infraestructure/repositories/InventoryRepository";
+import { SocketClient } from "../../infraestructure/socket/SocketClient";
 import { IOrderAvailability } from "../interfaces/InventoryAvailability";
 
 class InventoryService {
@@ -22,12 +23,17 @@ class InventoryService {
         checkRecipeAvailability,
         updateInventoryForRecipe
       } = InventoryRepository;
+
+      const socket = new SocketClient();
       const responseOrderAvailability = await checkOrderAvailability(order, checkRecipeAvailability);
       console.log('responseOrderAvailability ', JSON.stringify(responseOrderAvailability));
       this.publishEvent('DisponibilidadValidada', responseOrderAvailability);
+      socket.emit('disponibilidadValidada ', responseOrderAvailability);
+
       if(responseOrderAvailability.availability){
         await updateInventoryForOrder(order, updateInventoryForRecipe);
         this.publishEvent('InventarioActualizado', {idPedido: order.idPedido});
+        socket.emit('inventarioActualizado ', {idPedido: order.idPedido});
       }
     }
   }

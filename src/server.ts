@@ -4,6 +4,7 @@ import Database from './infraestructure/database/Database';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
 import Messages from './infraestructure/messages/Messages';
+import { SocketClient } from './infraestructure/socket/SocketClient';
 
 const app = express();
 app.disable("x-powered-by");
@@ -18,6 +19,17 @@ const PORT = process.env.PORT ?? 4000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+const socketService = new SocketClient();
+
+socketService.on('connect', () => {
+    console.log('Connected to socket server');
+});
+
+
+setTimeout(() => {
+  socketService.emit('mensaje', 'Hola desde el backend con TypeScript!');
+}, 2000);
 
 Database.testConnection();
 Messages();
