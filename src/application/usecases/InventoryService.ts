@@ -28,12 +28,12 @@ class InventoryService {
       const responseOrderAvailability = await checkOrderAvailability(order, checkRecipeAvailability);
       console.log('responseOrderAvailability ', JSON.stringify(responseOrderAvailability));
       this.publishEvent('DisponibilidadValidada', responseOrderAvailability);
-      socket.emit('disponibilidadValidada ', responseOrderAvailability);
+      socket.emit('disponibilidadValidada', responseOrderAvailability);
 
       if(responseOrderAvailability.availability){
         await updateInventoryForOrder(order, updateInventoryForRecipe);
         this.publishEvent('InventarioActualizado', {idPedido: order.idPedido});
-        socket.emit('inventarioActualizado ', {idPedido: order.idPedido});
+        socket.emit('inventarioActualizado', {idPedido: order.idPedido});
       }
     }
   }
